@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: weather
+      MYSQL_DATABASE: weather
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  node-backend:
+    build:
+      context: ./nodejs-weather-app
+    container_name: node-backend
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: weather
+      DB_DATABASE: weather
+    ports:
+      - "4000:4000"
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  angular-frontend:
+    build:
+      context: ./angular-weather-app
+      dockerfile: Dockerfile
+    command: ["npm", "start"]
+    ports:
+      - "4200:4200"
+
+volumes:
+  mysql-data:
