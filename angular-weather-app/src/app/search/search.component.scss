@@ -1,0 +1,60 @@
+.search-history {
+  display: flex;
+  flex-direction: row; /* Розміщення карток по горизонталі */
+  justify-content: flex-start; /* Вирівнювання по лівому краю */
+  align-items: flex-start; /* Вирівнювання по верхньому краю */
+  margin-top: 20px;
+  flex-wrap: wrap; /* Перенесення карток на новий рядок, якщо не вміщаються */
+}
+
+.weather-container {
+  display: flex;
+  flex-direction: column; /* Всередині однієї картки все залишаємо вертикальним */
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.weather-card {
+  background-color: #f0f4f8;
+  border-radius: 15px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 10px; /* Відступ між картками */
+  margin-bottom: 10px;
+}
+
+.weather-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.temperature {
+  font-size: 2rem;
+  color: #ff7b54;
+  margin: 10px 0;
+}
+
+.description {
+  font-size: 1rem;
+  color: #4a4a4a;
+}
+
+.weather-details {
+  display: flex;
+  flex-direction: column; /* Залишаємо вертикальне вирівнювання всередині картки */
+  margin-top: 10px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.detail-item img {
+  width: 24px;
+  margin-right: 10px;
+}

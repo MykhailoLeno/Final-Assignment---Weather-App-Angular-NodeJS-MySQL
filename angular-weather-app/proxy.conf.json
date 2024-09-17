@@ -1,0 +1,13 @@
+{
+  "/socket": {
+    "target": "http://node-backend:8080",
+    "ws": true,
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/api": {
+    "target": "http://node-backend:4000",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

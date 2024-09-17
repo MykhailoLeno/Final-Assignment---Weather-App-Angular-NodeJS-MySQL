@@ -6,14 +6,13 @@ const app = express();
 const cors = require('cors');
 
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 }); // Порт WebSocket
+const wss = new WebSocket.Server({ port: 8080 });
 const PORT = process.env.PORT || 4000;
 
-// const port = 3000;
 
-// Налаштування парсера JSON
+// Parser JSON settings
 app.use(bodyParser.json());
-// Налаштування CORS
+// Settings CORS
 app.use(cors({
     origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -32,7 +31,7 @@ wss.on('connection', ws => {
     });
 });
 
-// Додайте функцію для надсилання даних через WebSocket
+// function for sending data by WebSocket
 function sendToClients(data) {
     wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
@@ -41,7 +40,7 @@ function sendToClients(data) {
     });
 }
 
-// Налаштування підключення до бази даних
+// db connections settings
 const db = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -57,7 +56,7 @@ db.connect((err) => {
     console.log('Підключено до бази даних');
 });
 
-// Роут для отримання історії пошуків
+// Get searches from db
 app.get('/api/search-history', (req, res) => {
     db.query('SELECT * FROM search_history', (err, results) => {
         if (err) {
@@ -69,7 +68,7 @@ app.get('/api/search-history', (req, res) => {
     });
 });
 
-// Роут для збереження пошуку
+// Save search in db
 app.post('/api/search-history', (req, res) => {
     const { city, temperature, description, wind, lat, lon, timestamp } = req.body;
 
@@ -83,8 +82,8 @@ app.post('/api/search-history', (req, res) => {
         temperature,
         description,
         wind,
-        lat,  // Use coord.lat instead of coord.lat
-        lon,  // Use coord.lon instead of coord.lon
+        lat,
+        lon,
         timestamp
     ];
 
@@ -93,11 +92,12 @@ app.post('/api/search-history', (req, res) => {
             console.error('Error inserting data:', err);
             return res.status(500).json({ error: 'Server Error' });
         }
+        sendToClients({ city, temperature, description, wind, lat, lon, timestamp });
         res.status(201).json({ message: 'Data inserted successfully' });
     });
 });
 
-// Запуск сервера
+// start server
 app.listen(PORT, () => {
     console.log(`Сервер запущено на http://localhost:${PORT}`);
 });
