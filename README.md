@@ -44,3 +44,5 @@ $ sudo docker-compose up
 
 
 **DB name - weather, password to mysql db - weather**
+
+**database settings should install automatically**
